@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="description" content="Minder is an app that you can rate all you favorite movies and tv shows">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0">
+        <title>Minder - Rate all you favorite Movies and TV shows </title>
+    </head>
+    <body ng-app="mainApp">
+        <header class="header">
+            <a ng-href="#/dashboard"><img src="./dist/img/eye.svg" /></a>
+            <h1>Minder</h1>
+            <div class="header-avatar">
+                <md-icon md-svg-src = './dist/img/person.svg'></md-icon>
+                <strong>User</strong>
+            </div>
+        </header>
+        <ng-include src="'./src/app/routes/templates/menu.html'" scope="" onload=""></ng-include>
+        <section class="main-container">
+            <div ui-view></div> 
+        </section>
+        <footer class="footer">
+            
+        </footer>
+        <script type="text/javascript" src="./dist/js/bundle.js" charset="utf-8"></script>
+    </body>
+</html>

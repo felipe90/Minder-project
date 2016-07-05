@@ -1,0 +1,116 @@
+/* 
+	Dashboard Styles
+ */
+ 
+.main-container {
+	text-align: center;
+}
+
+.movile-menu {
+	border-radius: 5px;
+	display: block;
+	position: fixed;
+	background: none;
+	right: 5%;
+	bottom: 5%;
+	margin-top: -2.5em;
+	z-index: 1;
+}
+
+md-nav-ink-bar,
+.movile-menu .md-button { 
+	background: #0277bd !important;
+}
+
+md-icon, 
+.md-button.md-accent {
+	color: #185694 !important;
+}
+
+.dashboard-list {
+	margin: 0.1rem;
+    height: auto;
+    box-shadow: 1px 3px 5px #888888;
+    padding: 0.5rem; 
+    margin: 0.1rem;
+}
+
+.dashboard-list .dashboard-list-item {   
+    width: 100%;
+    position: relative;
+    background: none; 
+    min-width: 280px;  
+}
+
+.dashboard-list .dashboard-list-item-metadata {
+	margin: 0;    
+	width: 100%;
+    position: absolute;
+    bottom: 1.5%;
+    background: black;
+    opacity: 0.7;
+}
+
+.dashboard-list-item-metadata > *{
+	color: white;
+	display: inline-block;
+}
+
+
+/* Movile screens */
+@media only screen  
+  and (max-device-width: 320px) {
+
+	.dashboard-list-item img{
+		width: 280px;
+	}
+
+	.dashboard-list-item-metadata > h3{
+		font-size: 0.8rem;
+	}
+}
+
+
+/* Little Divices */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px) {
+
+	.dashboard-list-item img{
+		width: 380px;
+	}
+	.dashboard-list-item-metadata > h3{
+		font-size: 0.9rem;
+	}
+}
+
+/* Tablet or medium */
+@media only screen 
+  and (min-device-width: 480px) 
+  and (max-device-width: 720px) {
+	
+	.movile-menu {
+		display: none;
+	}	
+
+}
+
+
+/* Desktop or bigger */
+@media only screen 
+  and (min-device-width: 720px) {
+	
+	.movile-menu {
+		display: none;
+	}
+
+	.dashboard-list-item {
+		display: table-cell;
+    	padding: 0 2px;
+	}
+
+	.list-container {
+   		overflow-x: scroll;
+	}
+	
+}

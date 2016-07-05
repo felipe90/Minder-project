@@ -1,0 +1,47 @@
+
+<!-- menu template -->
+
+<md-content class="md-padding movile-menu">
+    <md-fab-toolbar md-open="false" count="demo.count" md-direction="left">
+        <md-fab-trigger class="align-with-text">
+            <md-button aria-label="menu" class="md-fab md-primary">
+            <md-icon md-svg-src="./dist/img/menu.svg"></md-icon>
+            </md-button>
+        </md-fab-trigger>
+        <md-toolbar>
+	        <md-fab-actions class="md-toolbar-tools">
+	            <md-button aria-label="Dashboard" class="md-icon-button">
+	                <a ng-href="#/dashboard">
+	             		<md-icon md-svg-src="./dist/img/dashboard.svg"></md-icon>
+	         		</a>
+	            </md-button>
+	            <md-button aria-label="Rate TvShow" class="md-icon-button">
+	        	  	<a ng-href="#/rate-tv">
+	                	<md-icon md-svg-src="./dist/img/tv.svg"></md-icon>
+	        	  	</a>
+	            </md-button>
+	            <md-button aria-label="Rate Movie" class="md-icon-button">
+	            	<a ng-href="#/rate-movie">
+		                <md-icon md-svg-src="./dist/img/movie.svg"></md-icon>
+	            	</a>
+	            </md-button>
+            </md-fab-actions>
+        </md-toolbar>
+    </md-fab-toolbar>
+</md-content>
+
+
+<nav class="md-padding md-raised">
+	<md-nav-bar aria-label="toggle">
+		<md-nav-item md-nav-href="#/dashboard" name="Dashboard">
+			Dashboard <md-icon md-svg-src="./dist/img/dashboard-black.svg"></md-icon>
+		</md-nav-item>
+		<md-nav-item md-nav-href="#/rate-movie" name="Rate Movie">
+			Rate Movie <md-icon md-svg-src="./dist/img/movie-black.svg"></md-icon>
+		</md-nav-item>
+		<md-nav-item md-nav-href="#/rate-tv" name="Rate TvShow">
+			Rate TvShow <md-icon md-svg-src="./dist/img/tv-black.svg"></md-icon>
+		</md-nav-item>
+	</md-nav-bar>
+</nav>
+

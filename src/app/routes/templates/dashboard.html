@@ -1,0 +1,30 @@
+<!-- dashboard  template-->
+
+<section ng-controller="dashboardCtrl as ctrl" class="dashboard-list">
+	<md-content layout-padding flex>
+	    <strong>Rate all you favorite Movies and TV shows</strong>
+		<h2>Most Popular Movies</h2>
+		<section class="list-container">
+			<article ng-repeat="item in ctrl.movieItems | limitTo:5 " class="dashboard-list-item" ng-click="ctrl.ChangeToRateItem(item, 'rate-movie')">
+					<img ng-src="{{ctrl.config.imgUrl+ctrl.config.imgSizes.tiny+this.item.backdrop_path}}" alt="{{item.name}}">
+					<div class="dashboard-list-item-metadata">
+						<h3>{{item.original_title}}</h3>
+						<md-icon md-svg-src = './dist/img/person.svg'></md-icon><p>{{item.vote_count}}</p>
+						<md-icon md-svg-src = './dist/img/ratestar.svg'></md-icon><p>{{item.vote_average}}</p>
+					</div>
+			</article>
+		</section>
+
+		<h2>Most Popular Tv Shows</h2>
+		<section class="list-container">
+			<article ng-repeat="item in ctrl.tvItems | limitTo:5 " class="dashboard-list-item" ng-click="ctrl.ChangeToRateItem(item, 'rate-tv')">
+					<img ng-src="{{ctrl.config.imgUrl+ctrl.config.imgSizes.tiny+this.item.backdrop_path}}" alt="{{item.name}}">
+					<div class="dashboard-list-item-metadata">
+						<h3>{{item.name}}</h3>
+						<md-icon md-svg-src = './dist/img/person.svg'></md-icon><p>{{item.vote_count}}</p>
+						<md-icon md-svg-src = './dist/img/ratestar.svg'></md-icon><p>{{item.vote_average}}</p>
+					</div>
+			</article>
+		</section>
+	</md-content>
+</section>

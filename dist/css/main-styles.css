@@ -1,0 +1,87 @@
+/* 
+	Main Styles
+ */
+ 
+body {
+	text-align: left;
+	font-size: 16px;
+}
+
+header {
+    position: relative;
+	margin-bottom: 0.3rem;
+	background: #185694;
+	color: white; 
+	-webkit-box-shadow: 0 8px 6px -6px black;
+    -moz-box-shadow: 0 8px 6px -6px black;
+        box-shadow: 0 8px 6px -6px black;
+}
+
+header h1,
+header a {
+	display: inline-block;
+	margin: 0.8rem;
+}
+
+.header-avatar {
+	position: absolute;
+    right: 5%;
+    top: 50%;
+    background: #0277bd;
+    padding: 0.5rem 1.2rem;
+    -webkit-box-shadow: 0 8px 6px -6px black;
+    -moz-box-shadow: 0 8px 6px -6px black;
+        box-shadow: 0 8px 6px -6px black;
+}
+
+/* Movile screens */
+@media only screen  
+  and (max-device-width: 320px) {
+
+	body {
+		max-width: 480px;
+	}
+	header h2{ 
+		display: none; 
+	}
+	nav {
+		display: none;
+	}	
+}
+
+
+/* Little Divices */
+@media only screen 
+  and (min-device-width: 320px) 
+  and (max-device-width: 480px) {
+
+	body {
+		max-width: 480px;
+	}
+	header h2{ 
+		display: none; 
+	}
+	nav {
+		display: none;
+	}
+}
+
+/* Tablet or medium */
+@media only screen 
+  and (min-device-width: 480px) 
+  and (max-device-width: 720px) {
+
+	nav {
+		display: block;
+	}
+}
+
+
+/* Desktop or bigger */
+@media only screen 
+  and (min-device-width: 720px) {
+	
+	nav {
+		display: block;
+	}	
+}

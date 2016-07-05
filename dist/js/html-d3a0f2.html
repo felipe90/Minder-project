@@ -1,0 +1,66 @@
+<!-- ratetv  template-->
+
+<section ng-controller="rateTvCtrl as ctrl" class="rateMovie-container">
+  <md-button md-no-ink class="md-primary" ng-click="ctrl.toogleSearchOptions()">{{ctrl.showPreferencesTitle}}</md-button>
+  <section class="rateMovie-toolbar" ng-hide="ctrl.showPreferences">
+
+    <!-- select year  -->
+    <md-input-container class="md-block" flex-gt-sm>
+      <label>Year</label>
+      <md-select ng-model="ctrl.pref.year">
+        <md-option ng-repeat="item in ctrl.yearItems" value="{{item}}">
+          {{item}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+    <!-- select order  -->
+    <md-input-container class="md-block" flex-gt-sm>
+      <label>Order by</label>
+      <md-select ng-model="ctrl.pref.order">
+        <md-option ng-repeat="item in ctrl.orderItems" value="{{item.id}}">
+          {{item.name}}
+        </md-option>
+      </md-select>
+    </md-input-container>
+
+    <!-- genre select -->
+    <md-input-container class="md-block" flex-gt-sm>
+        <label>Genre</label>
+        <md-select ng-model="ctrl.pref.genre">
+          <md-option ng-repeat="item in ctrl.genresItems" value="{{item.id}}">
+            {{item.name}}
+          </md-option>
+        </md-select>
+      </md-input-container>
+  </section>
+  <md-button class="md-raised md-primary get-movie-btn" ng-click="ctrl.requestTvItems()"> Get TV Shows! </md-button>
+
+  <md-content class="md-padding" layout-xs="column">
+    <article ng-repeat="item in ctrl.tvItems | limitTo:3 " class="ratemovie-item">
+      <md-card>
+        <img ng-src="{{ctrl.config.imgUrl+ctrl.config.imgSizes.tiny+item.backdrop_path}}" alt="{{item.name}}">
+        <div class="ratemovie-item-metadata">
+          <div class="ratemovie-item-header">
+            <h2>{{item.name}}</h2>
+            <md-icon md-svg-src = './dist/img/person-black.svg'></md-icon><p>{{item.vote_count}}</p>
+            <md-icon md-svg-src = './dist/img/ratestar-black.svg'></md-icon><p>{{item.vote_average}}</p>
+          </div>
+          <div class="ratemovie-item-content">
+            <strong>Overview</strong>
+            <p>{{item.overview}}</p>
+          </div>
+          <div class="ratemovie-item-rate">
+            <strong>Your Rating</strong>
+            <md-slider-container>
+              <md-slider flex min="0" max="10" ng-model="item.rate" aria-label="rate" class="md-primary"></md-slider>
+              <md-input-container>
+                <input flex type="number" ng-model="item.rate" aria-label="red" aria-controls="red-slider">
+            </md-slider-container>
+            <md-button class="md-raised md-primary" aria-label="button" md-ripple-size="auto" ng-click="ctrl.itemVote( item, item.rate)"> Rate it!</md-button>
+          </div>
+        </div>
+      </md-card>
+    </article>
+  </md-content>
+</section>
