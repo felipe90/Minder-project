@@ -31,7 +31,7 @@ class rateMovieService {
 		return promise
 	*/
 	requestGenresList () {
-		let url = 'http://api.themoviedb.org/3/genre/movie/list?'+'api_key='+this.config.apikey;
+		let url = 'https://api.themoviedb.org/3/genre/movie/list?'+'api_key='+this.config.apikey;
 
 		let promise = this.$http.get( url )
 			.success(function (data) {

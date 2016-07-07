@@ -72284,7 +72284,7 @@
 		}, {
 			key: 'requestGenresList',
 			value: function requestGenresList() {
-				var url = 'http://api.themoviedb.org/3/genre/movie/list?' + 'api_key=' + this.config.apikey;
+				var url = 'https://api.themoviedb.org/3/genre/movie/list?' + 'api_key=' + this.config.apikey;
 
 				var promise = this.$http.get(url).success(function (data) {
 					return data;
@@ -72375,7 +72375,7 @@
 		}, {
 			key: 'requestGenresList',
 			value: function requestGenresList() {
-				var url = 'http://api.themoviedb.org/3/genre/tv/list?' + 'api_key=' + this.config.apikey;
+				var url = 'https://api.themoviedb.org/3/genre/tv/list?' + 'api_key=' + this.config.apikey;
 
 				var promise = this.$http.get(url).success(function (data) {
 					return data;
