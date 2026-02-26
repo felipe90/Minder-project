@@ -1,21 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useMovieStore } from '../../store/movieStore';
+import React, { useState, useMemo } from 'react';
+import { useDiscoverMovies, useMovieGenres } from '../../hooks';
 import type { DiscoverFilters } from '../../services/types';
 import { YEARS, SORT_OPTIONS } from '../../services/config';
 import { imdbService } from '../../services/tmdbService';
 import '../../styles/RateMovie.css';
 
 export const RateMovie: React.FC = () => {
-  const {
-    movies,
-    genres,
-    isLoading,
-    error,
-    fetchMovieGenres,
-    discoverMovies,
-    setSelectedMovie,
-  } = useMovieStore();
-
   const [filters, setFilters] = useState<DiscoverFilters>({
     sort_by: 'SORT_BY_POPULARITY',
   });
@@ -23,14 +13,18 @@ export const RateMovie: React.FC = () => {
   const [showPreferences, setShowPreferences] = useState(false);
   const [ratings, setRatings] = useState<{ [key: string]: number }>({});
 
-  useEffect(() => {
-    fetchMovieGenres();
-    discoverMovies(filters);
-  }, []);
+  // TanStack Query hooks
+  const { data: moviesData, isLoading, error } = useDiscoverMovies(filters);
+  const { data: genresData, isLoading: genresLoading } = useMovieGenres();
+
+  const movies = moviesData?.results || [];
+  const genres = genresData?.genres || [];
+
+  // Memoize to avoid unnecessary recalculations
+  const displayMovies = useMemo(() => movies, [movies]);
 
   const handleFilterChange = (newFilters: DiscoverFilters) => {
     setFilters(newFilters);
-    discoverMovies(newFilters);
   };
 
   const handleRate = (movieId: string, rating: number) => {
@@ -46,9 +40,10 @@ export const RateMovie: React.FC = () => {
   };
 
   const handleNextMovie = () => {
-    if (movies.length > 0) {
-      const randomIndex = Math.floor(Math.random() * movies.length);
-      setSelectedMovie(movies[randomIndex]);
+    if (displayMovies.length > 0) {
+      const randomIndex = Math.floor(Math.random() * displayMovies.length);
+      // Could use a context/store to set selected movie if needed
+      console.log('Random movie:', displayMovies[randomIndex]);
     }
   };
 
@@ -111,9 +106,10 @@ export const RateMovie: React.FC = () => {
                   with_genres: e.target.value ? e.target.value : undefined,
                 })
               }
+              disabled={genresLoading}
             >
               <option value="">All Genres</option>
-              {genres.map((genre) => (
+              {genres.map((genre: any) => (
                 <option key={genre.id} value={genre.name}>
                   {genre.name}
                 </option>
@@ -123,13 +119,17 @@ export const RateMovie: React.FC = () => {
         </div>
       )}
 
-      {error && <div className="error-message">{error}</div>}
+      {error && (
+        <div className="error-message">
+          {error instanceof Error ? error.message : 'Failed to load movies'}
+        </div>
+      )}
 
       <div className="movies-list">
         {isLoading ? (
           <div className="loading">Loading movies...</div>
-        ) : movies.length > 0 ? (
-          movies.map((movie) => (
+        ) : displayMovies.length > 0 ? (
+          displayMovies.map((movie: any) => (
             <div key={movie.id} className="movie-item">
               <div className="movie-poster">
                 <img
@@ -167,7 +167,7 @@ export const RateMovie: React.FC = () => {
         )}
       </div>
 
-      {movies.length > 0 && (
+      {displayMovies.length > 0 && (
         <button className="next-btn" onClick={handleNextMovie}>
           Next Random Movie
         </button>

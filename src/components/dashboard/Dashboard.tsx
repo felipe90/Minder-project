@@ -1,51 +1,42 @@
-import React, { useEffect } from 'react';
-import { useMovieStore } from '../../store/movieStore';
-import { useTvStore } from '../../store/tvStore';
+import React from 'react';
+import {
+  usePopularMovies,
+  useNewestMovies,
+  usePopularTvShows,
+  useNewestTvShows,
+} from '../../hooks';
 import { MovieCard } from './MovieCard';
 import { TvCard } from './TvCard';
 import '../../styles/Dashboard.css';
 
 export const Dashboard: React.FC = () => {
-  const {
-    movies,
-    newestMovies,
-    isLoading: moviesLoading,
-    error: moviesError,
-    fetchPopularMovies,
-    fetchNewestMovies,
-  } = useMovieStore();
+  const { data: popularMoviesData, isLoading: popularMoviesLoading, error: popularMoviesError } = usePopularMovies();
+  const { data: newestMoviesData, isLoading: newestMoviesLoading, error: newestMoviesError } = useNewestMovies();
+  const { data: popularTvData, isLoading: popularTvLoading, error: popularTvError } = usePopularTvShows();
+  const { data: newestTvData, isLoading: newestTvLoading, error: newestTvError } = useNewestTvShows();
 
-  const {
-    tvShows,
-    newestTvShows,
-    isLoading: tvLoading,
-    error: tvError,
-    fetchPopularTvShows,
-    fetchNewestTvShows,
-  } = useTvStore();
+  const popularMovies = popularMoviesData?.results || [];
+  const newestMovies = newestMoviesData?.results || [];
+  const popularTv = popularTvData?.results || [];
+  const newestTv = newestTvData?.results || [];
 
-  useEffect(() => {
-    fetchPopularMovies();
-    fetchNewestMovies();
-    fetchPopularTvShows();
-    fetchNewestTvShows();
-  }, [fetchPopularMovies, fetchNewestMovies, fetchPopularTvShows, fetchNewestTvShows]);
+  const hasError = popularMoviesError || newestMoviesError || popularTvError || newestTvError;
 
   return (
     <div className="dashboard">
-      {(moviesError || tvError) && (
+      {hasError && (
         <div className="dashboard-error">
-          {moviesError || tvError}
+          {hasError instanceof Error ? hasError.message : 'Failed to load content'}
         </div>
       )}
 
       <section className="dashboard-section">
         <h2>🆕 Newest Movies</h2>
-        {moviesLoading ? (
+        {newestMoviesLoading ? (
           <div className="loading">Loading movies...</div>
         ) : (
           <div className="items-grid">
-            {newestMovies.map((movie) => (
+            {newestMovies.map((movie: any) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
           </div>
@@ -54,11 +45,11 @@ export const Dashboard: React.FC = () => {
 
       <section className="dashboard-section">
         <h2>⭐ Popular Movies</h2>
-        {moviesLoading ? (
+        {popularMoviesLoading ? (
           <div className="loading">Loading movies...</div>
         ) : (
           <div className="items-grid">
-            {movies.map((movie) => (
+            {popularMovies.map((movie: any) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
           </div>
@@ -67,11 +58,11 @@ export const Dashboard: React.FC = () => {
 
       <section className="dashboard-section">
         <h2>🆕 Newest TV Shows</h2>
-        {tvLoading ? (
+        {newestTvLoading ? (
           <div className="loading">Loading TV shows...</div>
         ) : (
           <div className="items-grid">
-            {newestTvShows.map((tvShow) => (
+            {newestTv.map((tvShow: any) => (
               <TvCard key={tvShow.id} tvShow={tvShow} />
             ))}
           </div>
@@ -80,11 +71,11 @@ export const Dashboard: React.FC = () => {
 
       <section className="dashboard-section">
         <h2>⭐ Popular TV Shows</h2>
-        {tvLoading ? (
+        {popularTvLoading ? (
           <div className="loading">Loading TV shows...</div>
         ) : (
           <div className="items-grid">
-            {tvShows.map((tvShow) => (
+            {popularTv.map((tvShow: any) => (
               <TvCard key={tvShow.id} tvShow={tvShow} />
             ))}
           </div>

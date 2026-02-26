@@ -1,21 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { useTvStore } from '../../store/tvStore';
+import React, { useState, useMemo } from 'react';
+import { useDiscoverTvShows, useTvGenres } from '../../hooks';
 import type { DiscoverFilters } from '../../services/types';
 import { YEARS, SORT_OPTIONS } from '../../services/config';
 import { imdbService } from '../../services/tmdbService';
 import '../../styles/RateTv.css';
 
 export const RateTv: React.FC = () => {
-  const {
-    tvShows,
-    genres,
-    isLoading,
-    error,
-    fetchTvGenres,
-    discoverTvShows,
-    setSelectedTvShow,
-  } = useTvStore();
-
   const [filters, setFilters] = useState<DiscoverFilters>({
     sort_by: 'SORT_BY_POPULARITY',
   });
@@ -23,14 +13,18 @@ export const RateTv: React.FC = () => {
   const [showPreferences, setShowPreferences] = useState(false);
   const [ratings, setRatings] = useState<{ [key: string]: number }>({});
 
-  useEffect(() => {
-    fetchTvGenres();
-    discoverTvShows(filters);
-  }, []);
+  // TanStack Query hooks
+  const { data: tvData, isLoading, error } = useDiscoverTvShows(filters);
+  const { data: genresData, isLoading: genresLoading } = useTvGenres();
+
+  const tvShows = tvData?.results || [];
+  const genres = genresData?.genres || [];
+
+  // Memoize to avoid unnecessary recalculations
+  const displayTvShows = useMemo(() => tvShows, [tvShows]);
 
   const handleFilterChange = (newFilters: DiscoverFilters) => {
     setFilters(newFilters);
-    discoverTvShows(newFilters);
   };
 
   const handleRate = (tvId: string, rating: number) => {
@@ -46,9 +40,10 @@ export const RateTv: React.FC = () => {
   };
 
   const handleNextShow = () => {
-    if (tvShows.length > 0) {
-      const randomIndex = Math.floor(Math.random() * tvShows.length);
-      setSelectedTvShow(tvShows[randomIndex]);
+    if (displayTvShows.length > 0) {
+      const randomIndex = Math.floor(Math.random() * displayTvShows.length);
+      // Could use a context/store to set selected TV show if needed
+      console.log('Random TV show:', displayTvShows[randomIndex]);
     }
   };
 
@@ -111,9 +106,10 @@ export const RateTv: React.FC = () => {
                   with_genres: e.target.value ? e.target.value : undefined,
                 })
               }
+              disabled={genresLoading}
             >
               <option value="">All Genres</option>
-              {genres.map((genre) => (
+              {genres.map((genre: any) => (
                 <option key={genre.id} value={genre.name}>
                   {genre.name}
                 </option>
@@ -123,13 +119,17 @@ export const RateTv: React.FC = () => {
         </div>
       )}
 
-      {error && <div className="error-message">{error}</div>}
+      {error && (
+        <div className="error-message">
+          {error instanceof Error ? error.message : 'Failed to load TV shows'}
+        </div>
+      )}
 
       <div className="tv-list">
         {isLoading ? (
           <div className="loading">Loading TV shows...</div>
-        ) : tvShows.length > 0 ? (
-          tvShows.map((tvShow) => (
+        ) : displayTvShows.length > 0 ? (
+          displayTvShows.map((tvShow: any) => (
             <div key={tvShow.id} className="tv-item">
               <div className="tv-poster">
                 <img
@@ -167,7 +167,7 @@ export const RateTv: React.FC = () => {
         )}
       </div>
 
-      {tvShows.length > 0 && (
+      {displayTvShows.length > 0 && (
         <button className="next-btn" onClick={handleNextShow}>
           Next Random TV Show
         </button>
