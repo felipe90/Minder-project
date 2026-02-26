@@ -43,6 +43,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({
     <div className="item-card movie-card">
       <div className="item-card-image">
         <img
+          loading="lazy"
           src={imageUrl}
           alt={movie.primaryTitle}
           onClick={handleClick}

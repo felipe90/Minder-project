@@ -43,6 +43,7 @@ export const TvCard: React.FC<TvCardProps> = ({
     <div className="item-card tv-card">
       <div className="item-card-image">
         <img
+          loading="lazy"
           src={imageUrl}
           alt={tvShow.primaryTitle}
           onClick={handleClick}

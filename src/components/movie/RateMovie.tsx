@@ -133,6 +133,7 @@ export const RateMovie: React.FC = () => {
             <div key={movie.id} className="movie-item">
               <div className="movie-poster">
                 <img
+                  loading="lazy"
                   src={imdbService.getImageUrl(movie.primaryImage)}
                   alt={movie.primaryTitle}
                 />

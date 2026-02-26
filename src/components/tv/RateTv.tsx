@@ -133,6 +133,7 @@ export const RateTv: React.FC = () => {
             <div key={tvShow.id} className="tv-item">
               <div className="tv-poster">
                 <img
+                  loading="lazy"
                   src={imdbService.getImageUrl(tvShow.primaryImage)}
                   alt={tvShow.primaryTitle}
                 />
