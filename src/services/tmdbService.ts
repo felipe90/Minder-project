@@ -57,7 +57,7 @@ export const imdbService = {
   getPopularMovies: async (limit = 50) => {
     const { data } = await api.get('/titles', {
       params: {
-        types: [TITLE_TYPES.MOVIE],
+        types: TITLE_TYPES.MOVIE,
         sortBy: 'SORT_BY_POPULARITY',
         sortOrder: 'DESC',
         limit,
@@ -71,7 +71,7 @@ export const imdbService = {
 
   discoverMovies: async (filters: DiscoverFilters) => {
     const params: any = {
-      types: [TITLE_TYPES.MOVIE],
+      types: TITLE_TYPES.MOVIE,
       sortBy: filters.sort_by || 'SORT_BY_POPULARITY',
       sortOrder: 'DESC',
       limit: 50,
@@ -83,7 +83,7 @@ export const imdbService = {
     }
 
     if (filters.with_genres) {
-      params.genres = [filters.with_genres];
+      params.genres = filters.with_genres;
     }
 
     const { data } = await api.get('/titles', { params });
@@ -104,7 +104,7 @@ export const imdbService = {
   getPopularTvShows: async (limit = 50) => {
     const { data } = await api.get('/titles', {
       params: {
-        types: [TITLE_TYPES.TV_SERIES],
+        types: TITLE_TYPES.TV_SERIES,
         sortBy: 'SORT_BY_POPULARITY',
         sortOrder: 'DESC',
         limit,
@@ -118,7 +118,7 @@ export const imdbService = {
 
   discoverTv: async (filters: DiscoverFilters) => {
     const params: any = {
-      types: [TITLE_TYPES.TV_SERIES],
+      types: TITLE_TYPES.TV_SERIES,
       sortBy: filters.sort_by || 'SORT_BY_POPULARITY',
       sortOrder: 'DESC',
       limit: 50,
@@ -130,7 +130,7 @@ export const imdbService = {
     }
 
     if (filters.with_genres) {
-      params.genres = [filters.with_genres];
+      params.genres = filters.with_genres;
     }
 
     const { data } = await api.get('/titles', { params });
