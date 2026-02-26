@@ -4,6 +4,7 @@ import { imdbService } from '../services/tmdbService';
 
 interface TvStore {
   tvShows: TvShow[];
+  newestTvShows: TvShow[];
   genres: Genre[];
   selectedTvShow: TvShow | null;
   isLoading: boolean;
@@ -13,6 +14,7 @@ interface TvStore {
 
   // Actions
   fetchPopularTvShows: () => Promise<void>;
+  fetchNewestTvShows: () => Promise<void>;
   fetchTvGenres: () => Promise<void>;
   discoverTvShows: (filters: DiscoverFilters) => Promise<void>;
   searchTvShows: (query: string) => Promise<void>;
@@ -23,6 +25,7 @@ interface TvStore {
 
 export const useTvStore = create<TvStore>((set) => ({
   tvShows: [],
+  newestTvShows: [],
   genres: [],
   selectedTvShow: null,
   isLoading: false,
@@ -40,6 +43,24 @@ export const useTvStore = create<TvStore>((set) => ({
       });
     } catch (error) {
       set({ error: 'Failed to fetch popular TV shows' });
+      console.error(error);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  fetchNewestTvShows: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      const response = await imdbService.discoverTv({
+        sort_by: 'SORT_BY_RELEASE_DATE',
+      });
+      set({
+        newestTvShows: response.results || [],
+        error: null,
+      });
+    } catch (error) {
+      set({ error: 'Failed to fetch newest TV shows' });
       console.error(error);
     } finally {
       set({ isLoading: false });

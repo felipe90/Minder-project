@@ -4,6 +4,7 @@ import { imdbService } from '../services/tmdbService';
 
 interface MovieStore {
   movies: Movie[];
+  newestMovies: Movie[];
   genres: Genre[];
   selectedMovie: Movie | null;
   isLoading: boolean;
@@ -13,6 +14,7 @@ interface MovieStore {
 
   // Actions
   fetchPopularMovies: () => Promise<void>;
+  fetchNewestMovies: () => Promise<void>;
   fetchMovieGenres: () => Promise<void>;
   discoverMovies: (filters: DiscoverFilters) => Promise<void>;
   searchMovies: (query: string) => Promise<void>;
@@ -23,6 +25,7 @@ interface MovieStore {
 
 export const useMovieStore = create<MovieStore>((set) => ({
   movies: [],
+  newestMovies: [],
   genres: [],
   selectedMovie: null,
   isLoading: false,
@@ -44,6 +47,27 @@ export const useMovieStore = create<MovieStore>((set) => ({
       const errorMessage = error instanceof Error ? error.message : 'Failed to fetch popular movies';
       console.error('❌ Error fetching popular movies:', errorMessage, error);
       set({ error: 'Failed to fetch popular movies' });
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  fetchNewestMovies: async () => {
+    set({ isLoading: true, error: null });
+    try {
+      console.log('📥 Fetching newest movies...');
+      const response = await imdbService.discoverMovies({
+        sort_by: 'SORT_BY_RELEASE_DATE',
+      });
+      console.log('✅ Newest movies fetched:', response);
+      set({
+        newestMovies: response.results || [],
+        error: null,
+      });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch newest movies';
+      console.error('❌ Error fetching newest movies:', errorMessage, error);
+      set({ error: 'Failed to fetch newest movies' });
     } finally {
       set({ isLoading: false });
     }
