@@ -1,0 +1,127 @@
+/* Item Card Styles - IMDb Dark Theme */
+.item-card {
+  background: rgba(17, 17, 17, 0.8);
+  backdrop-filter: blur(10px) saturate(180%);
+  border: 1px solid #FFB81C;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(255, 184, 28, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.item-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 16px 48px rgba(255, 184, 28, 0.4);
+  background: rgba(26, 26, 46, 0.9);
+  border-color: #f5a623;
+}
+
+.item-card-image {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(255, 184, 28, 0.1), rgba(245, 166, 35, 0.1));
+  aspect-ratio: 2/3;
+}
+
+.item-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.item-card:hover .item-card-image img {
+  transform: scale(1.05);
+}
+
+.item-card-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.item-card:hover .item-card-overlay {
+  opacity: 1;
+}
+
+.item-card-rating {
+  background: linear-gradient(135deg, #FFB81C 0.95%, #f5a623 0.95%);
+  border-radius: 6px;
+  padding: 0.35rem 0.85rem;
+  font-weight: 700;
+  color: #050810;
+  box-shadow: 0 4px 12px rgba(255, 184, 28, 0.5);
+  backdrop-filter: blur(5px);
+  border: 1px solid #f5a623;
+}
+
+.rating-value {
+  font-size: 1.2rem;
+}
+
+.item-card-content {
+  padding: 1.25rem;
+}
+
+.item-card-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.3px;
+}
+
+.item-card-year {
+  margin: 0 0 0.75rem 0;
+  color: #9ab;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.item-card-overview {
+  margin: 0 0 1rem 0;
+  color: #b0b0b0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.item-card-action-btn {
+  width: 100%;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #FFB81C 0%, #f5a623 100%);
+  color: #050810;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 184, 28, 0.3);
+}
+
+.item-card-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 184, 28, 0.5);
+}
+
+.item-card-action-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.4);
+}

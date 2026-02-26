@@ -1,0 +1,97 @@
+/* Menu Styles - IMDb Dark Theme Navigation */
+.menu {
+  background: rgba(10, 14, 39, 0.95);
+  backdrop-filter: blur(10px) saturate(180%);
+  border-bottom: 1px solid #FFB81C;
+  padding: 0;
+  animation: slideDown 0.4s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+.menu-link {
+  display: block;
+  padding: 1rem 1.75rem;
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 600;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+}
+
+.menu-link::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: #FFB81C;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-link:hover {
+  background: rgba(255, 184, 28, 0.1);
+  color: #FFB81C;
+}
+
+.menu-link:hover::before {
+  width: 100%;
+}
+
+.menu-link:active {
+  background: rgba(255, 184, 28, 0.2);
+  border-bottom-color: #FFB81C;
+}
+
+/* Tablet Responsive */
+@media (max-width: 768px) {
+  .menu-list {
+    flex-wrap: wrap;
+  }
+
+  .menu-link {
+    padding: 0.85rem 1.25rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  .menu {
+    padding: 0.5rem 0;
+  }
+
+  .menu-list {
+    gap: 0.5rem;
+  }
+
+  .menu-link {
+    padding: 0.75rem 1rem;
+    font-size: 0.75rem;
+    flex: 1;
+    text-align: center;
+    min-width: 100px;
+  }
+}
