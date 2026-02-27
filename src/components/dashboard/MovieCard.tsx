@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import type { Movie } from '../../services/types';
 import { useMovieStore } from '../../store/movieStore';
 import { imdbService } from '../../services/tmdbService';
+import { OptimizedImage } from '../common/OptimizedImage';
 import '../../styles/ItemCard.css';
 
 interface MovieCardProps {
@@ -42,8 +43,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({
   return (
     <div className="item-card movie-card">
       <div className="item-card-image">
-        <img
-          loading="lazy"
+        <OptimizedImage
           src={imageUrl}
           alt={movie.primaryTitle}
           onClick={handleClick}

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import type { TvShow } from '../../services/types';
 import { useTvStore } from '../../store/tvStore';
 import { imdbService } from '../../services/tmdbService';
+import { OptimizedImage } from '../common/OptimizedImage';
 import '../../styles/ItemCard.css';
 
 interface TvCardProps {
@@ -42,8 +43,7 @@ export const TvCard: React.FC<TvCardProps> = ({
   return (
     <div className="item-card tv-card">
       <div className="item-card-image">
-        <img
-          loading="lazy"
+        <OptimizedImage
           src={imageUrl}
           alt={tvShow.primaryTitle}
           onClick={handleClick}

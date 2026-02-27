@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useDiscoverTvShows, useTvGenres } from '../../hooks';
+import { OptimizedImage } from '../common/OptimizedImage';
 import type { DiscoverFilters } from '../../services/types';
 import { YEARS, SORT_OPTIONS } from '../../services/config';
 import { imdbService } from '../../services/tmdbService';
@@ -132,8 +133,7 @@ export const RateTv: React.FC = () => {
           displayTvShows.map((tvShow: any) => (
             <div key={tvShow.id} className="tv-item">
               <div className="tv-poster">
-                <img
-                  loading="lazy"
+                <OptimizedImage
                   src={imdbService.getImageUrl(tvShow.primaryImage)}
                   alt={tvShow.primaryTitle}
                 />

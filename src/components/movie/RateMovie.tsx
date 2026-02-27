@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useDiscoverMovies, useMovieGenres } from '../../hooks';
+import { OptimizedImage } from '../common/OptimizedImage';
 import type { DiscoverFilters } from '../../services/types';
 import { YEARS, SORT_OPTIONS } from '../../services/config';
 import { imdbService } from '../../services/tmdbService';
@@ -132,8 +133,7 @@ export const RateMovie: React.FC = () => {
           displayMovies.map((movie: any) => (
             <div key={movie.id} className="movie-item">
               <div className="movie-poster">
-                <img
-                  loading="lazy"
+                <OptimizedImage
                   src={imdbService.getImageUrl(movie.primaryImage)}
                   alt={movie.primaryTitle}
                 />
