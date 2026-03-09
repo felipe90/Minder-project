@@ -20,7 +20,8 @@ Una aplicación moderna construida con React + TypeScript para calificar pelícu
 - **React Router v6** - Navigation
 - **Zustand** - State Management
 - **Axios** - HTTP Client
-- **TMDb API** - Movies & TV Data
+- **IMDb API** (https://imdbapi.dev) - Movies & TV Data, libre sin API key
+
 
 ## 📋 Requisitos
 
@@ -41,15 +42,8 @@ cd minder-react
 npm install
 ```
 
-3. **Configurar variables de entorno**
-```bash
-cp .env.example .env
-```
 
-Editar `.env` y agregar tu TMDb API Key:
-```
-VITE_TMDB_API_KEY=tu_api_key_aqui
-```
+(No se necesitan variables de entorno; la API de IMDb es libre y no requiere clave.)
 
 ## 🏃 Comandos
 
