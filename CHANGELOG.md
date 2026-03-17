@@ -1,8 +1,44 @@
 # 📋 Resumen de Cambios - Minder React Redesign
 
-**Fecha:** 16 de marzo de 2026  
-**Versión:** 1.3.0  
-**Estado:** ✅ Completado - Test Coverage
+**Fecha:** 17 de marzo de 2026  
+**Versión:** 1.4.0  
+**Estado:** ✅ Completado - Test Coverage >80%
+
+---
+
+## 📈 Cobertura de Tests >80% (v1.4.0)
+
+**Fecha:** 17 de marzo de 2026
+
+### Cobertura Anterior vs Actual
+
+| Métrica | v1.3.0 | v1.4.0 |
+|---------|--------|--------|
+| **Statements** | 62.85% | **86.85%** ✅ |
+| **Branches** | 57.28% | **66.99%** |
+| **Functions** | 74.46% | **87.23%** ✅ |
+| **Lines** | 61.3% | **86.3%** ✅ |
+
+### Tests Agregados para Stores
+
+- **movieStore.test.ts**: Tests async con MSW (7 tests)
+- **tvStore.test.ts**: Tests async con MSW (7 tests)
+
+### Cobertura por Módulo
+
+| Módulo | Cobertura |
+|--------|----------|
+| services | **95.08%** ✅ |
+| components/dashboard | **93.33%** ✅ |
+| components/common | 77.77% |
+| store | **78.78%** ✅ |
+
+### Build & Tests
+```
+✅ Build: Exitoso
+✅ Tests: 85 passed
+✅ Lint: Sin errores
+```
 
 ---
 

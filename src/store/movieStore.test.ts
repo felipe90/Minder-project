@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterAll, afterEach } from 'vitest';
+import { describe, it, expect, afterAll, afterEach } from 'vitest';
 import { setupServer } from 'msw/node';
 import { http, HttpResponse } from 'msw';
 import { useMovieStore } from './movieStore';

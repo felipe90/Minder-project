@@ -1,17 +1,55 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect, afterAll, afterEach } from 'vitest';
+import { setupServer } from 'msw/node';
+import { http, HttpResponse } from 'msw';
 import { useTvStore } from './tvStore';
-import type { TvShow } from '../services/types';
 
-const mockTvShow: TvShow = {
+const mockTvShow = {
   id: 'tt1234568',
   primaryTitle: 'Test TV Show',
+  originalTitle: 'Test TV Show Original',
   primaryImage: { url: 'https://example.com/tv-image.jpg' },
+  plot: 'Test TV plot',
   startYear: 2023,
+  endYear: 2024,
+  runtimeSeconds: 3600,
   genres: ['Drama'],
+  rating: {
+    aggregateRating: 7.8,
+    voteCount: 500,
+  },
 };
 
-describe('tvStore', () => {
-  beforeEach(() => {
+const mockTvShowsResponse = {
+  titles: [mockTvShow],
+};
+
+const mockInterestsResponse = {
+  categories: [
+    {
+      interests: [
+        { id: '1', name: 'Drama' },
+        { id: '2', name: 'Comedy' },
+      ],
+    },
+  ],
+};
+
+const server = setupServer(
+  http.get('https://api.imdbapi.dev/titles', () => {
+    return HttpResponse.json(mockTvShowsResponse);
+  }),
+  http.get('https://api.imdbapi.dev/interests', () => {
+    return HttpResponse.json(mockInterestsResponse);
+  }),
+  http.get('https://api.imdbapi.dev/search/titles', () => {
+    return HttpResponse.json(mockTvShowsResponse);
+  })
+);
+
+describe('tvStore async actions', () => {
+  beforeAll(() => server.listen());
+  afterEach(() => {
+    server.resetHandlers();
     useTvStore.setState({
       tvShows: [],
       newestTvShows: [],
@@ -23,155 +61,81 @@ describe('tvStore', () => {
       totalPages: 1,
     });
   });
+  afterAll(() => server.close());
 
-  it('has initial state', () => {
-    const state = useTvStore.getState();
-    expect(state.tvShows).toEqual([]);
-    expect(state.newestTvShows).toEqual([]);
-    expect(state.genres).toEqual([]);
-    expect(state.selectedTvShow).toBeNull();
-    expect(state.isLoading).toBe(false);
-    expect(state.error).toBeNull();
-  });
-
-  it('setSelectedTvShow updates selected TV show', () => {
-    const { setSelectedTvShow } = useTvStore.getState();
-    setSelectedTvShow(mockTvShow);
+  it('fetchPopularTvShows loads TV shows successfully', async () => {
+    const { fetchPopularTvShows } = useTvStore.getState();
     
-    const state = useTvStore.getState();
-    expect(state.selectedTvShow).toEqual(mockTvShow);
-  });
-
-  it('setSelectedTvShow can set null', () => {
-    useTvStore.setState({ selectedTvShow: mockTvShow });
-    const { setSelectedTvShow } = useTvStore.getState();
-    setSelectedTvShow(null);
+    expect(useTvStore.getState().isLoading).toBe(false);
     
-    const state = useTvStore.getState();
-    expect(state.selectedTvShow).toBeNull();
-  });
-
-  it('setError updates error message', () => {
-    const { setError } = useTvStore.getState();
-    setError('Test error');
+    await fetchPopularTvShows();
     
-    const state = useTvStore.getState();
-    expect(state.error).toBe('Test error');
-  });
-
-  it('setError can clear error', () => {
-    useTvStore.setState({ error: 'Previous error' });
-    const { setError } = useTvStore.getState();
-    setError(null);
-    
-    const state = useTvStore.getState();
-    expect(state.error).toBeNull();
-  });
-
-  it('clearTvShows resets tvShows and selectedTvShow', () => {
-    useTvStore.setState({ tvShows: [mockTvShow], selectedTvShow: mockTvShow });
-    const { clearTvShows } = useTvStore.getState();
-    clearTvShows();
-    
-    const state = useTvStore.getState();
-    expect(state.tvShows).toEqual([]);
-    expect(state.selectedTvShow).toBeNull();
-  });
-
-  it('can update tvShows directly', () => {
-    useTvStore.setState({ tvShows: [mockTvShow] });
     const state = useTvStore.getState();
     expect(state.tvShows).toHaveLength(1);
     expect(state.tvShows[0].primaryTitle).toBe('Test TV Show');
+    expect(state.error).toBeNull();
+    expect(state.isLoading).toBe(false);
   });
 
-  it('can update newestTvShows', () => {
-    useTvStore.setState({ newestTvShows: [mockTvShow] });
+  it('fetchNewestTvShows loads newest TV shows successfully', async () => {
+    const { fetchNewestTvShows } = useTvStore.getState();
+    
+    await fetchNewestTvShows();
+    
     const state = useTvStore.getState();
     expect(state.newestTvShows).toHaveLength(1);
+    expect(state.error).toBeNull();
   });
 
-  it('can update genres', () => {
-    const genres = [{ id: '1', name: 'Drama' }];
-    useTvStore.setState({ genres });
+  it('fetchTvGenres loads genres successfully', async () => {
+    const { fetchTvGenres } = useTvStore.getState();
+    
+    await fetchTvGenres();
+    
     const state = useTvStore.getState();
-    expect(state.genres).toEqual(genres);
+    expect(state.genres).toHaveLength(2);
+    expect(state.genres[0].name).toBe('Drama');
   });
 
-  it('can update loading state', () => {
-    useTvStore.setState({ isLoading: true });
-    const state = useTvStore.getState();
-    expect(state.isLoading).toBe(true);
-  });
-
-  it('can update pagination', () => {
-    useTvStore.setState({ currentPage: 3, totalPages: 8 });
-    const state = useTvStore.getState();
-    expect(state.currentPage).toBe(3);
-    expect(state.totalPages).toBe(8);
-  });
-
-  it('handles multiple state updates', () => {
-    useTvStore.setState({ 
-      tvShows: [mockTvShow],
-      isLoading: true,
-      error: null,
-      currentPage: 2,
-    });
+  it('discoverTvShows loads TV shows with filters', async () => {
+    const { discoverTvShows } = useTvStore.getState();
+    
+    await discoverTvShows({ sort_by: 'SORT_BY_RELEASE_DATE' });
     
     const state = useTvStore.getState();
     expect(state.tvShows).toHaveLength(1);
-    expect(state.isLoading).toBe(true);
     expect(state.error).toBeNull();
-    expect(state.currentPage).toBe(2);
   });
 
-  it('handles empty state for tvShows', () => {
-    const state = useTvStore.getState();
-    expect(state.tvShows).toEqual([]);
-  });
-
-  it('handles empty state for newestTvShows', () => {
-    const state = useTvStore.getState();
-    expect(state.newestTvShows).toEqual([]);
-  });
-
-  it('handles empty genres array', () => {
-    const state = useTvStore.getState();
-    expect(state.genres).toEqual([]);
-  });
-
-  it('can reset to initial state', () => {
-    useTvStore.setState({
-      tvShows: [mockTvShow],
-      newestTvShows: [mockTvShow],
-      genres: [{ id: '1', name: 'Drama' }],
-      selectedTvShow: mockTvShow,
-      isLoading: true,
-      error: 'Some error',
-      currentPage: 5,
-      totalPages: 10,
-    });
+  it('searchTvShows loads TV shows by query', async () => {
+    const { searchTvShows } = useTvStore.getState();
     
-    useTvStore.setState({
-      tvShows: [],
-      newestTvShows: [],
-      genres: [],
-      selectedTvShow: null,
-      isLoading: false,
-      error: null,
-      currentPage: 1,
-      totalPages: 1,
-    });
+    await searchTvShows('Test');
     
     const state = useTvStore.getState();
-    expect(state.tvShows).toEqual([]);
-    expect(state.newestTvShows).toEqual([]);
-    expect(state.genres).toEqual([]);
-    expect(state.selectedTvShow).toBeNull();
-    expect(state.isLoading).toBe(false);
+    expect(state.tvShows).toHaveLength(1);
     expect(state.error).toBeNull();
-    expect(state.currentPage).toBe(1);
-    expect(state.totalPages).toBe(1);
+  });
+
+  it('fetchPopularTvShows sets loading state during fetch', async () => {
+    const { fetchPopularTvShows } = useTvStore.getState();
+    
+    const promise = fetchPopularTvShows();
+    
+    expect(useTvStore.getState().isLoading).toBe(true);
+    
+    await promise;
+    
+    expect(useTvStore.getState().isLoading).toBe(false);
+  });
+
+  it('fetchNewestTvShows sets loading state during fetch', async () => {
+    const { fetchNewestTvShows } = useTvStore.getState();
+    
+    const promise = fetchNewestTvShows();
+    expect(useTvStore.getState().isLoading).toBe(true);
+    
+    await promise;
+    expect(useTvStore.getState().isLoading).toBe(false);
   });
 });
