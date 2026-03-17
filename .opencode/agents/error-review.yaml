@@ -1,0 +1,6 @@
+mode: subagent
+description: Diagnoses runtime errors and provides fixes
+tools:
+  read: true
+  grep: true
+  glob: true

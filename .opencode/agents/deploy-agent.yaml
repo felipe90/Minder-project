@@ -1,0 +1,6 @@
+mode: subagent
+description: Deploys application to Firebase
+tools:
+  read: true
+  bash: true
+  glob: true

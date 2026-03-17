@@ -1,0 +1,6 @@
+mode: subagent
+description: Reviews code implementations for quality
+tools:
+  read: true
+  grep: true
+  glob: true

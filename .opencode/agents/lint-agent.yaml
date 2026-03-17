@@ -1,0 +1,7 @@
+mode: subagent
+description: Runs linting and fixes code style issues
+tools:
+  read: true
+  edit: true
+  bash: true
+  glob: true

@@ -1,0 +1,10 @@
+mode: primary
+description: Main orchestrator for minder-project development workflow
+tools:
+  task: true
+  read: true
+  write: true
+  edit: true
+  bash: true
+  glob: true
+  grep: true

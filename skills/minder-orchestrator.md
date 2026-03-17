@@ -18,6 +18,12 @@ Main orchestrator agent for minder-react project. Analyzes user requests and del
 | `error-review` | Analyzes build/lint/test/runtime errors | Problem diagnosis |
 | `plan-implementation` | Implements defined development plans | Feature development |
 | `implementation-review` | Reviews code quality | Auto code review |
+| `lint-agent` | Runs ESLint and fixes issues | Code style |
+| `build-agent` | Handles build operations | Compilation |
+| `deploy-agent` | Deploys to Firebase | Production deployment |
+| `test-agent` | Runs tests and coverage | Validation |
+| `security-agent` | Security audit | Vulnerability scanning |
+| `cicd-agent` | Manages GitHub Actions | CI/CD workflows |
 
 ## Usage
 
@@ -47,18 +53,31 @@ Task(
 #### Complete Review
 1. Run `architecture-review` for structure
 2. Run `error-review` for problems
-3. Run `implementation-review` for code
-4. Consolidate findings
+3. Run `security-agent` for vulnerabilities
+4. Run `implementation-review` for code
+5. Consolidate findings
 
 #### Feature Implementation
 1. Run `plan-implementation` with requirements
 2. Run `implementation-review` after changes
-3. Run `error-review` for verification
+3. Run `lint-agent` for code style
+4. Run `test-agent` to validate
+5. Run `error-review` for verification
+
+#### Security Audit
+1. Run `security-agent` for vulnerability scan
+2. Run `lint-agent` for security-related lint rules
+3. Report findings
 
 #### Problem Diagnosis
 1. Run `error-review` to identify errors
 2. If architecture issues, delegate to `architecture-review`
 3. Generate fix plan
+
+#### Deployment
+1. Run `build-agent` for production build
+2. Run `test-agent` for final validation
+3. Run `deploy-agent` to deploy
 
 ## Project Context
 

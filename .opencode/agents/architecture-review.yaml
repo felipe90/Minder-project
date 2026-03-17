@@ -1,0 +1,6 @@
+mode: subagent
+description: Analyzes code architecture and design patterns
+tools:
+  read: true
+  glob: true
+  grep: true

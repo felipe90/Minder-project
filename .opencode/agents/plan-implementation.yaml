@@ -1,0 +1,8 @@
+mode: subagent
+description: Plans and implements new features
+tools:
+  read: true
+  write: true
+  edit: true
+  glob: true
+  grep: true

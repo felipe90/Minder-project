@@ -1,0 +1,6 @@
+mode: subagent
+description: Audits code for security vulnerabilities
+tools:
+  read: true
+  grep: true
+  glob: true

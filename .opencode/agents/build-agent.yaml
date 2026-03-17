@@ -1,0 +1,6 @@
+mode: subagent
+description: Handles build operations and optimization
+tools:
+  read: true
+  bash: true
+  glob: true

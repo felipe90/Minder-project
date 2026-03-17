@@ -1,0 +1,8 @@
+mode: subagent
+description: Manages test execution and coverage
+tools:
+  read: true
+  write: true
+  edit: true
+  bash: true
+  glob: true

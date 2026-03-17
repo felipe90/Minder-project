@@ -1,0 +1,7 @@
+mode: subagent
+description: Manages CI/CD pipelines and workflows
+tools:
+  read: true
+  write: true
+  edit: true
+  glob: true
