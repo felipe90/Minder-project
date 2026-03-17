@@ -1,7 +1,7 @@
 {
   "hosting": {
     "site": "minder-vite2026",
-    "public": "public",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
