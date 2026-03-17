@@ -4,6 +4,35 @@ export interface Image {
   height?: number;
 }
 
+export interface ImdbApiTitle {
+  id: string;
+  primaryTitle: string;
+  originalTitle?: string;
+  primaryImage?: Image;
+  plot?: string;
+  startYear: number;
+  endYear?: number;
+  runtimeSeconds?: number;
+  genres?: string[];
+  rating?: {
+    aggregateRating: number;
+    voteCount: number;
+  };
+}
+
+export interface ImdbApiResponse {
+  results?: ImdbApiTitle[];
+  titles?: ImdbApiTitle[];
+}
+
+export interface ImdbApiCategory {
+  interests: Genre[];
+}
+
+export interface ImdbApiInterestsResponse {
+  categories?: ImdbApiCategory[];
+}
+
 export interface Movie {
   id: string;          // Format: "tt1234567"
   primaryTitle: string;

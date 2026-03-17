@@ -7,6 +7,7 @@ import {
 } from '../../hooks';
 import { MovieCard } from './MovieCard';
 import { TvCard } from './TvCard';
+import type { Movie, TvShow } from '../../services/types';
 import '../../styles/Dashboard.css';
 
 export const Dashboard: React.FC = () => {
@@ -15,10 +16,10 @@ export const Dashboard: React.FC = () => {
   const { data: popularTvData, isLoading: popularTvLoading, error: popularTvError } = usePopularTvShows();
   const { data: newestTvData, isLoading: newestTvLoading, error: newestTvError } = useNewestTvShows();
 
-  const popularMovies = popularMoviesData?.results || [];
-  const newestMovies = newestMoviesData?.results || [];
-  const popularTv = popularTvData?.results || [];
-  const newestTv = newestTvData?.results || [];
+  const popularMovies: Movie[] = popularMoviesData?.results || [];
+  const newestMovies: Movie[] = newestMoviesData?.results || [];
+  const popularTv: TvShow[] = popularTvData?.results || [];
+  const newestTv: TvShow[] = newestTvData?.results || [];
 
   const hasError = popularMoviesError || newestMoviesError || popularTvError || newestTvError;
 
@@ -36,7 +37,7 @@ export const Dashboard: React.FC = () => {
           <div className="loading">Loading movies...</div>
         ) : (
           <div className="items-grid">
-            {newestMovies.map((movie: any) => (
+            {newestMovies.map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
           </div>
@@ -49,7 +50,7 @@ export const Dashboard: React.FC = () => {
           <div className="loading">Loading movies...</div>
         ) : (
           <div className="items-grid">
-            {popularMovies.map((movie: any) => (
+            {popularMovies.map((movie) => (
               <MovieCard key={movie.id} movie={movie} />
             ))}
           </div>
@@ -62,7 +63,7 @@ export const Dashboard: React.FC = () => {
           <div className="loading">Loading TV shows...</div>
         ) : (
           <div className="items-grid">
-            {newestTv.map((tvShow: any) => (
+            {newestTv.map((tvShow) => (
               <TvCard key={tvShow.id} tvShow={tvShow} />
             ))}
           </div>
@@ -75,7 +76,7 @@ export const Dashboard: React.FC = () => {
           <div className="loading">Loading TV shows...</div>
         ) : (
           <div className="items-grid">
-            {popularTv.map((tvShow: any) => (
+            {popularTv.map((tvShow) => (
               <TvCard key={tvShow.id} tvShow={tvShow} />
             ))}
           </div>

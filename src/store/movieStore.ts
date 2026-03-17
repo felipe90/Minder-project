@@ -36,16 +36,12 @@ export const useMovieStore = create<MovieStore>((set) => ({
   fetchPopularMovies: async () => {
     set({ isLoading: true, error: null });
     try {
-      console.log('📥 Fetching popular movies...');
       const response = await imdbService.getPopularMovies();
-      console.log('✅ Popular movies fetched:', response);
       set({
         movies: response.results || [],
         error: null,
       });
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch popular movies';
-      console.error('❌ Error fetching popular movies:', errorMessage, error);
+    } catch {
       set({ error: 'Failed to fetch popular movies' });
     } finally {
       set({ isLoading: false });
@@ -55,18 +51,14 @@ export const useMovieStore = create<MovieStore>((set) => ({
   fetchNewestMovies: async () => {
     set({ isLoading: true, error: null });
     try {
-      console.log('📥 Fetching newest movies...');
       const response = await imdbService.discoverMovies({
         sort_by: 'SORT_BY_RELEASE_DATE',
       });
-      console.log('✅ Newest movies fetched:', response);
       set({
         newestMovies: response.results || [],
         error: null,
       });
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : 'Failed to fetch newest movies';
-      console.error('❌ Error fetching newest movies:', errorMessage, error);
+    } catch {
       set({ error: 'Failed to fetch newest movies' });
     } finally {
       set({ isLoading: false });
@@ -77,9 +69,8 @@ export const useMovieStore = create<MovieStore>((set) => ({
     try {
       const response = await imdbService.getMovieGenres();
       set({ genres: response.genres });
-    } catch (error) {
+    } catch {
       set({ error: 'Failed to fetch movie genres' });
-      console.error(error);
     }
   },
 
@@ -94,9 +85,8 @@ export const useMovieStore = create<MovieStore>((set) => ({
         movies: response.results || [],
         error: null,
       });
-    } catch (error) {
+    } catch {
       set({ error: 'Failed to discover movies' });
-      console.error(error);
     } finally {
       set({ isLoading: false });
     }
@@ -110,9 +100,8 @@ export const useMovieStore = create<MovieStore>((set) => ({
         movies: response.results || [],
         error: null,
       });
-    } catch (error) {
+    } catch {
       set({ error: 'Failed to search movies' });
-      console.error(error);
     } finally {
       set({ isLoading: false });
     }

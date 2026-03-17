@@ -1,5 +1,224 @@
 # 📋 Resumen de Cambios - Minder React Redesign
 
+**Fecha:** 16 de marzo de 2026  
+**Versión:** 1.3.0  
+**Estado:** ✅ Completado - Test Coverage
+
+---
+
+## 📈 Cobertura de Tests (v1.3.0)
+
+**Fecha:** 16 de marzo de 2026
+
+### Tests Agregados
+
+| Archivo | Tests Nuevos |
+|---------|-------------|
+| `Header.test.tsx` | 5 tests |
+| `Menu.test.tsx` | 8 tests |
+| `Footer.test.tsx` | 4 tests |
+| `OptimizedImage.test.tsx` | 7 tests |
+| `MovieCard.test.tsx` | 13 tests |
+| `TvCard.test.tsx` | 12 tests |
+| `tmdbService.test.ts` | 30 tests |
+| `movieStore.test.ts` | 14 tests |
+| `tvStore.test.ts` | 14 tests |
+
+### Cobertura Actual
+
+| Métrica | Antes | Después |
+|---------|-------|---------|
+| **Statements** | 34.91% | **62.85%** |
+| **Branches** | 24.27% | **57.28%** |
+| **Functions** | 47.72% | **74.46%** |
+| **Lines** | 32.09% | **61.3%** |
+
+### Cobertura por Módulo
+
+| Módulo | Cobertura |
+|--------|----------|
+| components/common | 77.77% |
+| components/dashboard | 93.33% |
+| services | 95.08% |
+| store | 15.15% |
+
+### Archivos de Test Creados
+
+- `src/components/common/Header.test.tsx`
+- `src/components/common/Menu.test.tsx`
+- `src/components/common/Footer.test.tsx`
+- `src/components/common/OptimizedImage.test.tsx`
+- `src/components/dashboard/MovieCard.test.tsx`
+- `src/components/dashboard/TvCard.test.tsx`
+- `src/services/tmdbService.test.ts` (expandido)
+- `src/store/movieStore.test.ts` (expandido)
+- `src/store/tvStore.test.ts` (expandido)
+
+### Build & Tests
+```
+✅ Build: Exitoso
+✅ Tests: 95 passed
+```
+
+---
+
+## 🔒 Fix de Seguridad (v1.2.1)
+
+**Fecha:** 16 de marzo de 2026
+
+### Issues Corregidos
+
+#### 1️⃣ Remoción de console.log残留
+- **Archivos:** `RateMovie.tsx`, `RateTv.tsx`
+- **Cambio:** Eliminados `console.log('Random movie/TV show:')` que exponían datos en debug
+
+#### 2️⃣ Validación de Input en localStorage
+- **Archivos:** `RateMovie.tsx`, `RateTv.tsx`
+- **Cambios:**
+  - Validación de `movieId`/`tvId` (no vacío)
+  - Validación de `rating` (número entre 1-10)
+  - try-catch para manejo seguro de localStorage
+  - Mensaje de error genérico en catch
+
+#### 3️⃣ Código Muerto Removido
+- Variables no utilizadas en funciones `handleNextMovie`/`handleNextShow`
+
+### Build & Tests
+```
+✅ Build: Exitoso
+✅ Tests: 35 passed
+```
+
+---
+
+## 🧪 Suite de Testing (v1.2.0)
+
+**Fecha:** 16 de marzo de 2026
+
+### Stack de Testing Implementado
+
+| Tecnología | Versión | Propósito |
+|-----------|---------|-----------|
+| **Vitest** | ^4.1.0 | Test runner nativo de Vite |
+| **@testing-library/react** | ^16.3.2 | Testing de componentes React |
+| **@testing-library/jest-dom** | ^6.9.1 | Matchers adicionales para DOM |
+| **@testing-library/user-event** | ^14.6.1 | Simula interacciones de usuario |
+| **happy-dom** | ^20.8.4 | DOM virtual rápido |
+| **msw** | ^2.12.11 | Mock de API calls |
+| **@vitest/coverage-v8** | ^4.1.0 | Coverage con V8 |
+
+### Archivos de Configuración
+
+- `vite.config.ts` - Configuración de Vitest con happy-dom
+- `tsconfig.app.json` - Tipos de Vitest agregados
+- `package.json` - Scripts de testing agregados
+
+### Scripts Disponibles
+
+```bash
+npm run test        # Ejecutar tests en watch mode
+npm run test:run   # Ejecutar tests una vez
+npm run test:ui    # UI de Vitest
+npm run test:coverage # Coverage report
+```
+
+### Tests Implementados
+
+| Archivo | Tests | Cobertura |
+|---------|-------|----------|
+| `MovieCard.test.tsx` | 8 tests | 60% |
+| `TvCard.test.tsx` | 8 tests | 60% |
+| `tmdbService.test.ts` | 7 tests | ~30% |
+| `movieStore.test.ts` | 6 tests | 15% |
+| `tvStore.test.ts` | 6 tests | 15% |
+| **Total** | **35 tests** | **~35%** |
+
+### Integración CI/CD
+
+- **Archivo:** `.github/workflows/ci.yml`
+- **Jobs:**
+  - Test con múltiples versiones de Node (18, 20, 22)
+  - Linting
+  - Tests con coverage
+  - Build y artifact upload
+
+---
+
+## 🛡️ Actualización de Seguridad (v1.1.0)
+
+**Fecha:** 16 de marzo de 2026
+
+### Cambios Implementados
+
+#### 1️⃣ Remoción de Logs de Debug
+- **Archivos afectados:**
+  - `src/services/tmdbService.ts` - Removidos interceptores de request/response logging
+  - `src/store/movieStore.ts` - Removidos console.log y console.error
+  - `src/store/tvStore.ts` - Removidos console.log y console.error
+- **Motivo:** Evitar exposición de URLs, parámetros y datos sensibles en producción
+
+#### 2️⃣ Content Security Policy (CSP)
+- **Archivo:** `index.html`
+- **Directivas implementadas:**
+  - `default-src 'self'`
+  - `script-src 'self' 'unsafe-inline'`
+  - `style-src 'self' 'unsafe-inline'`
+  - `img-src 'self' data: https:`
+  - `connect-src 'self' https://api.imdbapi.dev`
+  - `frame-ancestors 'none'`
+- **Headers adicionales:**
+  - `X-Content-Type-Options: nosniff`
+  - `X-Frame-Options: DENY`
+
+#### 3️⃣ Headers de Seguridad en Firebase
+- **Archivo:** `firebase.json`
+- **Headers agregados:**
+  - `X-Content-Type-Options: nosniff`
+  - `X-Frame-Options: DENY`
+  - `X-XSS-Protection: 1; mode=block`
+
+#### 4️⃣ Tipado TypeScript Estricto
+- **Archivo:** `src/services/types.ts`
+- **Nuevas interfaces agregadas:**
+  - `ImdbApiTitle` - Tipado para respuesta de API
+  - `ImdbApiResponse` - Tipado para respuestas
+  - `ImdbApiInterestsResponse` - Tipado para géneros
+- **Archivo:** `src/services/tmdbService.ts`
+  - Reemplazados todos los tipos `any` con interfaces específicas
+  - Agregada interfaz `QueryParams` para parámetros de API
+
+#### 5️⃣ Validación de Entrada
+- **Archivo:** `src/services/tmdbService.ts`
+- **Función:** `validateFilters()`
+  - Valida opciones de ordenamiento contra lista blanca
+  - Sanitiza año de lanzamiento (rango 1900-2027)
+  - Filtra caracteres no válidos en géneros
+
+#### 6️⃣ Manejo de Errores Seguro
+- **Archivos:** `movieStore.ts`, `tvStore.ts`
+- **Cambios:**
+  - Removida variable `error` no utilizada en catch blocks
+  - Mensajes de error genéricos (no exponen detalles internos)
+
+#### 7️⃣ Meta Tags de Seguridad
+- **Archivo:** `index.html`
+- **Agregados:**
+  - `description` - Descripción apropiada
+  - Título actualizado: "Minder" (antes "minder-react")
+
+---
+
+### Estado del Build
+```
+✅ TypeScript compilation sin errores
+✅ Build Vite exitoso
+✅ 168 módulos transformados
+```
+
+---
+
+## 🎯 Objetivo Principal
+
 **Fecha:** 26 de febrero de 2026  
 **Versión:** 1.0.0  
 **Estado:** ✅ Completado y Limpio (Build sin errores, cleanup finalizado)

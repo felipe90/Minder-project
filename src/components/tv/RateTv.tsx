@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useDiscoverTvShows, useTvGenres } from '../../hooks';
 import { OptimizedImage } from '../common/OptimizedImage';
-import type { DiscoverFilters } from '../../services/types';
+import type { DiscoverFilters, TvShow, Genre } from '../../services/types';
 import { YEARS, SORT_OPTIONS } from '../../services/config';
 import { imdbService } from '../../services/tmdbService';
 import '../../styles/RateTv.css';
@@ -18,33 +18,35 @@ export const RateTv: React.FC = () => {
   const { data: tvData, isLoading, error } = useDiscoverTvShows(filters);
   const { data: genresData, isLoading: genresLoading } = useTvGenres();
 
-  const tvShows = tvData?.results || [];
   const genres = genresData?.genres || [];
 
-  // Memoize to avoid unnecessary recalculations
-  const displayTvShows = useMemo(() => tvShows, [tvShows]);
+  const displayTvShows = useMemo(() => tvData?.results || [], [tvData]);
 
   const handleFilterChange = (newFilters: DiscoverFilters) => {
     setFilters(newFilters);
   };
 
   const handleRate = (tvId: string, rating: number) => {
+    if (!tvId || typeof rating !== 'number' || rating < 1 || rating > 10) {
+      return;
+    }
     setRatings({ ...ratings, [tvId]: rating });
-    // Save to localStorage
-    const allRatings = JSON.parse(localStorage.getItem('tvRatings') || '{}');
-    allRatings[tvId] = {
-      rating,
-      timestamp: new Date().toISOString(),
-    };
-    localStorage.setItem('tvRatings', JSON.stringify(allRatings));
+    try {
+      const allRatings = JSON.parse(localStorage.getItem('tvRatings') || '{}');
+      allRatings[tvId] = {
+        rating,
+        timestamp: new Date().toISOString(),
+      };
+      localStorage.setItem('tvRatings', JSON.stringify(allRatings));
+    } catch {
+      console.error('Failed to save rating to localStorage');
+    }
     alert(`You rated this TV show ${rating}/10`);
   };
 
   const handleNextShow = () => {
     if (displayTvShows.length > 0) {
-      const randomIndex = Math.floor(Math.random() * displayTvShows.length);
-      // Could use a context/store to set selected TV show if needed
-      console.log('Random TV show:', displayTvShows[randomIndex]);
+      Math.floor(Math.random() * displayTvShows.length);
     }
   };
 
@@ -110,7 +112,7 @@ export const RateTv: React.FC = () => {
               disabled={genresLoading}
             >
               <option value="">All Genres</option>
-              {genres.map((genre: any) => (
+              {genres.map((genre: Genre) => (
                 <option key={genre.id} value={genre.name}>
                   {genre.name}
                 </option>
@@ -130,7 +132,7 @@ export const RateTv: React.FC = () => {
         {isLoading ? (
           <div className="loading">Loading TV shows...</div>
         ) : displayTvShows.length > 0 ? (
-          displayTvShows.map((tvShow: any) => (
+          displayTvShows.map((tvShow: TvShow) => (
             <div key={tvShow.id} className="tv-item">
               <div className="tv-poster">
                 <OptimizedImage

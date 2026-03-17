@@ -41,9 +41,8 @@ export const useTvStore = create<TvStore>((set) => ({
         tvShows: response.results || [],
         error: null,
       });
-    } catch (error) {
+    } catch {
       set({ error: 'Failed to fetch popular TV shows' });
-      console.error(error);
     } finally {
       set({ isLoading: false });
     }
@@ -59,9 +58,8 @@ export const useTvStore = create<TvStore>((set) => ({
         newestTvShows: response.results || [],
         error: null,
       });
-    } catch (error) {
+    } catch {
       set({ error: 'Failed to fetch newest TV shows' });
-      console.error(error);
     } finally {
       set({ isLoading: false });
     }
@@ -71,9 +69,8 @@ export const useTvStore = create<TvStore>((set) => ({
     try {
       const response = await imdbService.getTvGenres();
       set({ genres: response.genres });
-    } catch (error) {
+    } catch {
       set({ error: 'Failed to fetch TV genres' });
-      console.error(error);
     }
   },
 
@@ -88,9 +85,8 @@ export const useTvStore = create<TvStore>((set) => ({
         tvShows: response.results || [],
         error: null,
       });
-    } catch (error) {
+    } catch {
       set({ error: 'Failed to discover TV shows' });
-      console.error(error);
     } finally {
       set({ isLoading: false });
     }
@@ -104,9 +100,8 @@ export const useTvStore = create<TvStore>((set) => ({
         tvShows: response.results || [],
         error: null,
       });
-    } catch (error) {
+    } catch {
       set({ error: 'Failed to search TV shows' });
-      console.error(error);
     } finally {
       set({ isLoading: false });
     }

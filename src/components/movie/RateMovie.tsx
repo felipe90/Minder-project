@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useDiscoverMovies, useMovieGenres } from '../../hooks';
 import { OptimizedImage } from '../common/OptimizedImage';
-import type { DiscoverFilters } from '../../services/types';
+import type { DiscoverFilters, Movie, Genre } from '../../services/types';
 import { YEARS, SORT_OPTIONS } from '../../services/config';
 import { imdbService } from '../../services/tmdbService';
 import '../../styles/RateMovie.css';
@@ -18,33 +18,35 @@ export const RateMovie: React.FC = () => {
   const { data: moviesData, isLoading, error } = useDiscoverMovies(filters);
   const { data: genresData, isLoading: genresLoading } = useMovieGenres();
 
-  const movies = moviesData?.results || [];
   const genres = genresData?.genres || [];
 
-  // Memoize to avoid unnecessary recalculations
-  const displayMovies = useMemo(() => movies, [movies]);
+  const displayMovies = useMemo(() => moviesData?.results || [], [moviesData]);
 
   const handleFilterChange = (newFilters: DiscoverFilters) => {
     setFilters(newFilters);
   };
 
   const handleRate = (movieId: string, rating: number) => {
+    if (!movieId || typeof rating !== 'number' || rating < 1 || rating > 10) {
+      return;
+    }
     setRatings({ ...ratings, [movieId]: rating });
-    // Save to localStorage
-    const allRatings = JSON.parse(localStorage.getItem('movieRatings') || '{}');
-    allRatings[movieId] = {
-      rating,
-      timestamp: new Date().toISOString(),
-    };
-    localStorage.setItem('movieRatings', JSON.stringify(allRatings));
+    try {
+      const allRatings = JSON.parse(localStorage.getItem('movieRatings') || '{}');
+      allRatings[movieId] = {
+        rating,
+        timestamp: new Date().toISOString(),
+      };
+      localStorage.setItem('movieRatings', JSON.stringify(allRatings));
+    } catch {
+      console.error('Failed to save rating to localStorage');
+    }
     alert(`You rated this movie ${rating}/10`);
   };
 
   const handleNextMovie = () => {
     if (displayMovies.length > 0) {
-      const randomIndex = Math.floor(Math.random() * displayMovies.length);
-      // Could use a context/store to set selected movie if needed
-      console.log('Random movie:', displayMovies[randomIndex]);
+      Math.floor(Math.random() * displayMovies.length);
     }
   };
 
@@ -110,7 +112,7 @@ export const RateMovie: React.FC = () => {
               disabled={genresLoading}
             >
               <option value="">All Genres</option>
-              {genres.map((genre: any) => (
+              {genres.map((genre: Genre) => (
                 <option key={genre.id} value={genre.name}>
                   {genre.name}
                 </option>
@@ -130,7 +132,7 @@ export const RateMovie: React.FC = () => {
         {isLoading ? (
           <div className="loading">Loading movies...</div>
         ) : displayMovies.length > 0 ? (
-          displayMovies.map((movie: any) => (
+          displayMovies.map((movie: Movie) => (
             <div key={movie.id} className="movie-item">
               <div className="movie-poster">
                 <OptimizedImage
